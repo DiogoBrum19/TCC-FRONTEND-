@@ -1,0 +1,59 @@
+<!-- edit-profile.html (Editar Perfil) -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" href="edit-profile.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Editar Perfil</h2>
+        
+        <form id="editProfileForm">
+            <!-- Nome de usuário -->
+            <div class="form-group">
+                <label for="username">Nome de Usuário:</label>
+                <input type="text" id="username" placeholder="Nome de Usuário" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+
+            <!-- Jogos favoritos -->
+            <div class="form-group">
+                <label for="favoriteGames">Jogos Favoritos:</label>
+                <input type="text" id="favoriteGames" placeholder="Jogos favoritos (separados por vírgula)" required>
+            </div>
+
+            <!-- Plataforma selecionável -->
+            <div class="form-group">
+                <label for="platform">Plataforma:</label>
+                <select id="platform" required>
+                    <option value="" disabled selected>Escolha a plataforma</option>
+                    <option value="PlayStation">PlayStation</option>
+                    <option value="PC">PC</option>
+                    <option value="Nintendo Switch">Nintendo Switch</option>
+                    <option value="Xbox">Xbox</option>
+                </select>
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea id="bio" placeholder="Escreva algo sobre você..." rows="5" required></textarea>
+            </div>
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+
+        <button onclick="logout()">Sair</button>
+    </div>
+
+    <script src="edit-profile.js"></script>
+</body>
+</html>

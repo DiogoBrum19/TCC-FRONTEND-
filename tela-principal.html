@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela Principal</title>
+    <link rel="stylesheet" href="tela-principal.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Tela Principal</h2>
+
+        <!-- SVG de Perfil que redireciona para a página de edição de perfil -->
+        <div class="profile-icon-container">
+            <a href="edit-profile.html">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 14c2.667 0 4.667 1 6 2.667C18 19 15 20 12 20c-3 0-6-2-6-3.333C7.333 15 9.333 14 12 14z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Barra de pesquisa de Jogadores -->
+        <div class="search-section">
+            <input type="text" id="searchPlayerInput" placeholder="Pesquisar jogador..." oninput="searchPlayer()">
+            <div id="searchPlayerResults"></div> <!-- Exibição de resultados de pesquisa de jogadores -->
+        </div>
+
+        <!-- Barra de pesquisa de Jogos -->
+        <div class="search-section">
+            <input type="text" id="searchGameInput" placeholder="Pesquisar jogo..." oninput="searchGame()">
+            <div id="searchGameResults"></div> <!-- Exibição de resultados de pesquisa de jogos -->
+        </div>
+
+        <h3>Jogadores Seguidos</h3>
+        <ul id="followingList"></ul> <!-- Lista de jogadores seguidos -->
+
+        <button onclick="logout()">Sair</button>
+    </div>
+
+    <script src="tela-principal.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!-- register.html (Tela de Cadastro) -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <form id="registerForm">
+            <input type="text" id="regUsername" placeholder="Usuário" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Senha" required>
+
+            <!-- Plataforma selecionável -->
+            <div class="form-group">
+                <label for="plataformType">Plataforma:</label>
+                <select id="plataformType" required>
+                    <option value="" disabled selected>Escolha a plataforma</option>
+                    <option value="PlayStation">PlayStation</option>
+                    <option value="PC">PC</option>
+                    <option value="Nintendo Switch">Nintendo Switch</option>
+                    <option value="Xbox">Xbox</option>
+                </select>
+            </div>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p>Já tem uma conta? <a href="index.html">Faça login</a></p>
+    </div>
+    <script src="register.js"></script>
+</body>
+</html>

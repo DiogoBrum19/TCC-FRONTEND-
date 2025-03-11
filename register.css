@@ -1,0 +1,86 @@
+/* register.css - Estilo para a página de cadastro (register.html) */
+
+/* Reset de estilo básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilos gerais da página */
+body {
+    background: linear-gradient(to right, #1e3c72, #2a5298); /* Gradiente azul */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container do formulário */
+.container {
+    background: rgba(255, 255, 255, 0.1); /* Fundo translúcido */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Cabeçalho */
+h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #ffcc00; /* Cor dourada */
+    font-weight: bold;
+}
+
+/* Formulário */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+    border: none;
+    background: #333;
+    color: #fff;
+    font-size: 1em;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    color: #333;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ffdb4d;
+}
+
+p a {
+    color: #ffcc00;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+    
+    h2 {
+        font-size: 1.8em;
+    }
+}

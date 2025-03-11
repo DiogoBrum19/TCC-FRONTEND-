@@ -1,0 +1,77 @@
+/* pagina-jogo.css - Estilo para a página do jogo (pagina-jogo.html) */
+
+/* Reset de estilo básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilos gerais da página */
+body {
+    background: linear-gradient(to right, #1f1f1f, #2e2e2e); /* Gradiente escuro */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container principal */
+.container {
+    background: rgba(50, 50, 50, 0.8); /* Fundo translúcido */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Cabeçalho */
+h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #ffcc00; /* Cor dourada */
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Lista de usuários */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: rgba(255, 255, 255, 0.1); /* Fundo levemente opaco */
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+ul li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px); /* Efeito de elevação */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+}
