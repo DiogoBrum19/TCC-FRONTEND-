@@ -12,17 +12,23 @@ async function login(event) {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch(`${API_URL}/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
-        
+        const response = await fetch(`${API_URL}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include' // Permite que cookies/sessões sejam usados pelo backend
+        });
+
         if (!response.ok) {
             throw new Error('Erro ao tentar fazer login.');
         }
 
-        const message = await response.text(); // Corrigido para pegar string
-        console.log("Resposta do backend:", message);
+        const data = await response.json(); // Supondo que o backend retorna um JSON com status e mensagem
+        console.log("Resposta do backend:", data);
 
-        if (message.includes("Login bem-sucedido")) {
-            localStorage.setItem('username', username);
+        if (data.success) {
             window.location.href = 'tela-principal.html'; // Ajuste conforme sua estrutura
         } else {
             alert('Usuário ou senha incorretos.');
