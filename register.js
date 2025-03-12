@@ -44,7 +44,9 @@ async function register(event) {
         location: document.getElementById('location').value,
         plataformType: document.getElementById('plataformType').value,
         gamingTimePreferences: document.getElementById('gamingTimePreferences').value.split(','),
-        favoriteGames: Array.from(document.getElementById('favoriteGames').selectedOptions).map(option => option.value)
+        favoriteGames: Array.from(document.getElementById('favoriteGames').selectedOptions).map(option => ({
+            id: option.value  // **Ajustado para enviar um objeto, se necessário**
+        }))
     };
 
     try {
