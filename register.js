@@ -1,39 +1,4 @@
 const API_URL = 'http://localhost:8080/player';
-const GAMES_API_URL = 'http://localhost:8080/games'; // API para buscar jogos
-
-document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) registerForm.addEventListener('submit', register);
-
-    // Carregar os jogos disponíveis
-    loadGames();
-});
-
-async function loadGames() {
-    try {
-        const response = await fetch(GAMES_API_URL);
-        if (response.ok) {
-            const games = await response.json();
-            const selectElement = document.getElementById('favoriteGames');
-            
-            // Limpar as opções existentes
-            selectElement.innerHTML = '';
-            
-            // Adicionar opções de jogos
-            games.forEach(game => {
-                const option = document.createElement('option');
-                option.value = game.id;
-                option.textContent = game.name;
-                selectElement.appendChild(option);
-            });
-        } else {
-            console.error('Erro ao carregar os jogos.');
-        }
-    } catch (error) {
-        console.error('Erro de rede ao buscar os jogos:', error);
-    }
-}
-
 async function register(event) {
     event.preventDefault();
     
