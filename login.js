@@ -7,27 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function login(event) {
     event.preventDefault();
-    
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-
+    
     try {
-        const response = await fetch(`${API_URL}/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
-        
-        if (!response.ok) {
-            throw new Error('Erro ao tentar fazer login.');
-        }
+        const response = await fetch(`${API_URL}/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+            method: "GET"
+        });
 
-        const message = await response.text(); // **O backend retorna uma string, então pegamos como texto**
-        console.log("Resposta do backend:", message);
+        const data = await response.text(); // Seu backend retorna apenas um texto (String)
 
-        if (message.includes("Login bem-sucedido")) {
-            window.location.href = 'tela-principal.html'; // Ajuste conforme sua estrutura
+        if (data.includes("bem-sucedido")) {
+            alert("Login realizado com sucesso!");
+            window.location.href = "tela-principal.html";
         } else {
-            alert('Usuário ou senha incorretos.');
+            alert("Credenciais inválidas.");
         }
     } catch (error) {
-        console.error('Erro ao tentar logar:', error);
-        alert('Erro de conexão.');
+        alert("Erro ao conectar com o servidor.");
     }
 }
