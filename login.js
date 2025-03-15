@@ -7,17 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function login(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
     
     try {
         const response = await fetch(`${API_URL}/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
-            method: "GET"
+            method: "GET",
+            credentials: "include" // 🔥 Enables session cookies
         });
 
-        const data = await response.text(); // Seu backend retorna apenas um texto (String)
+        const data = await response.text();
 
-        if (data.includes("bem-sucedido")) {
+        if (response.ok && data.includes("bem-sucedido")) {
             alert("Login realizado com sucesso!");
             window.location.href = "tela-principal.html";
         } else {
