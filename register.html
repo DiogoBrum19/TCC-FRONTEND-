@@ -1,4 +1,3 @@
-<!-- register.html (Tela de Cadastro) -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,20 +14,15 @@
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="regPassword" placeholder="Senha" required>
 
-            <!-- Plataforma selecionável -->
-            <div class="form-group">
-                <label for="plataformType">Plataforma:</label>
-                <select id="plataformType" required>
-                    <option value="" disabled selected>Escolha a plataforma</option>
-                    <option value="PlayStation">PlayStation</option>
-                    <option value="PC">PC</option>
-                    <option value="Nintendo Switch">Nintendo Switch</option>
-                    <option value="Xbox">Xbox</option>
-                </select>
-            </div>
+            <!-- Plataforma como campo de texto -->
+            <input type="text" id="platform" placeholder="Plataforma (Ex: PC, PS5, PS4, XBOX)" required>
 
             <button type="submit">Cadastrar</button>
         </form>
+
+        <!-- Elemento para exibir mensagens -->
+        <p id="message"></p>
+
         <p>Já tem uma conta? <a href="index.html">Faça login</a></p>
     </div>
     <script src="register.js"></script>
