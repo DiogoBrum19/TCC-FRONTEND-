@@ -12,31 +12,26 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         return;
     }
 
-    // Cria o objeto de dados para enviar para a API
-    const loginData = {
-        username: username,
-        password: password
-    };
+    console.log('Tentando login com:', { username, password });
 
     // Faz a requisição para a API de login
-    fetch('http://localhost:8080/player/login?username=' + username + '&password=' + password, {
-        method: 'GET', 
+    fetch(`http://localhost:8080/player/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json' // Pode ser necessário dependendo de como a API é configurada
+            'Content-Type': 'application/json'
         }
     })
     .then(response => {
         if (!response.ok) {
-            // Se a resposta não for bem-sucedida, lança um erro
             throw new Error('Falha na autenticação. Verifique suas credenciais.');
         }
-        return response.text(); // Se a resposta for ok, continua o processamento
+        return response.text();
     })
     .then(data => {
         if (data === "Login bem-sucedido!") {
+            console.log('Usuário autenticado:', { username, password });
             alert('Login bem-sucedido!');
-            // Redireciona para a página de jogo
-            window.location.href = 'pagina-jogo.html';  // Redireciona para pagina-jogo.html
+            window.location.href = 'pagina-jogo.html';
         } else {
             alert('Credenciais inválidas.');
         }
