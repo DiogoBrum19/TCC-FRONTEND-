@@ -6,6 +6,12 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
+    // Validação simples dos campos
+    if (!username || !password) {
+        alert('Por favor, preencha todos os campos!');
+        return;
+    }
+
     // Cria o objeto de dados para enviar para a API
     const loginData = {
         username: username,
@@ -14,17 +20,22 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
     // Faz a requisição para a API de login
     fetch('http://localhost:8080/player/login?username=' + username + '&password=' + password, {
-        method: 'GET', // Ou 'POST' dependendo de como você configurar seu backend
+        method: 'GET', 
         headers: {
             'Content-Type': 'application/json' // Pode ser necessário dependendo de como a API é configurada
         }
     })
-    .then(response => response.text()) // Aqui, se a resposta for uma simples string
+    .then(response => {
+        if (!response.ok) {
+            // Se a resposta não for bem-sucedida, lança um erro
+            throw new Error('Falha na autenticação. Verifique suas credenciais.');
+        }
+        return response.text(); // Se a resposta for ok, continua o processamento
+    })
     .then(data => {
         if (data === "Login bem-sucedido!") {
             alert('Login bem-sucedido!');
-            
-            // Redireciona para a página de jogo após o login bem-sucedido
+            // Redireciona para a página de jogo
             window.location.href = 'pagina-jogo.html';  // Redireciona para pagina-jogo.html
         } else {
             alert('Credenciais inválidas.');
@@ -32,6 +43,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
     .catch(error => {
         console.error('Erro no login:', error);
-        alert('Erro ao tentar autenticar o usuário.');
+        alert('Erro ao tentar autenticar o usuário. Tente novamente mais tarde.');
     });
 });
