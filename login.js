@@ -1,30 +1,37 @@
-const API_URL = 'http://localhost:8080/player';
+// Captura o formulário de login
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
 
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) loginForm.addEventListener('submit', login);
-});
+    // Captura os dados do formulário
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-async function login(event) {
-    event.preventDefault();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    
-    try {
-        const response = await fetch(`${API_URL}/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
-            method: "GET",
-            credentials: "include" // 🔥 Enables session cookies
-        });
+    // Cria o objeto de dados para enviar para a API
+    const loginData = {
+        username: username,
+        password: password
+    };
 
-        const data = await response.text();
-
-        if (response.ok && data.includes("bem-sucedido")) {
-            alert("Login realizado com sucesso!");
-            window.location.href = "tela-principal.html";
-        } else {
-            alert("Credenciais inválidas.");
+    // Faz a requisição para a API de login
+    fetch('http://localhost:8080/player/login?username=' + username + '&password=' + password, {
+        method: 'GET', // Ou 'POST' dependendo de como você configurar seu backend
+        headers: {
+            'Content-Type': 'application/json' // Pode ser necessário dependendo de como a API é configurada
         }
-    } catch (error) {
-        alert("Erro ao conectar com o servidor.");
-    }
-}
+    })
+    .then(response => response.text()) // Aqui, se a resposta for uma simples string
+    .then(data => {
+        if (data === "Login bem-sucedido!") {
+            alert('Login bem-sucedido!');
+            
+            // Redireciona para a página de jogo após o login bem-sucedido
+            window.location.href = 'pagina-jogo.html';  // Redireciona para pagina-jogo.html
+        } else {
+            alert('Credenciais inválidas.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro no login:', error);
+        alert('Erro ao tentar autenticar o usuário.');
+    });
+});
