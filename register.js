@@ -11,8 +11,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     };
 
     // Valida a plataforma (aceita PC, PS5, PS4, XBOX)
-    const validPlatforms = ['pc', 'ps5', 'ps4', 'xbox'];  // Valida com caixa baixa
-    if (!validPlatforms.includes(formData.platform.toLowerCase())) {
+    const validPlatforms = ['PC', 'PS5', 'PS4', 'XBOX'];  // Usando as opções com a inicial maiúscula
+    if (!validPlatforms.includes(formData.platform)) {
         document.getElementById('message').textContent = "Plataforma inválida! Digite uma das opções: PC, PS5, PS4, XBOX.";
         document.getElementById('message').style.color = 'red';
         return;  // Impede o envio do formulário se a plataforma for inválida
