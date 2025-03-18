@@ -1,16 +1,17 @@
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
-    e.preventDefault();  // Previne o comportamento padrão de recarregar a página ao enviar o formulário
+    e.preventDefault();  // Evita o recarregamento da página
 
-    // Coleta os valores dos campos do formulário
+    // Coleta os valores do formulário
     const formData = {
         username: document.getElementById('regUsername').value,
         email: document.getElementById('email').value,
         password: document.getElementById('regPassword').value,
         country: document.getElementById('country').value.trim(),
-        plataformType: document.getElementById('platform').value.trim().toUpperCase()
+        plataformType: document.getElementById('platform').value.trim().toUpperCase(),
+        favoriteGames: [] // Inicializa um array vazio para os jogos favoritos
     };
 
-    // Valida a plataforma
+    // Validação da plataforma
     const validPlatforms = ['PC', 'PS5', 'PS4', 'XBOX'];
     if (!validPlatforms.includes(formData.plataformType)) {
         document.getElementById('message').textContent = "Plataforma inválida!";
@@ -18,55 +19,22 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         return;
     }
 
-    // Busca os jogos disponíveis
-    try {
-        const gamesResponse = await fetch('http://localhost:8080/game');
-        if (!gamesResponse.ok) {
-            throw new Error('Falha ao obter lista de jogos');
-        }
-        const games = await gamesResponse.json();
-        console.log("Jogos disponíveis:", games);
+    // Captura os jogos favoritos selecionados
+    const gamesSelect = document.getElementById('favoriteGames');
+    const selectedGames = Array.from(gamesSelect.selectedOptions).map(option => option.value);
+    formData.favoriteGames = selectedGames; // Adiciona ao formData
 
-        // Cria dinamicamente as opções do <select> para os jogos
-        const gamesSelect = document.getElementById('favoriteGames');
-        gamesSelect.innerHTML = '';  // Limpa o select anterior
-
-        games.forEach(game => {
-            const option = document.createElement('option');
-            option.value = game.name; // Nome do jogo
-            option.textContent = game.name; // Exibe o nome do jogo
-            gamesSelect.appendChild(option);
-        });
-
-        // Depois de carregar a lista de jogos, captura os jogos selecionados
-        const selectedGames = Array.from(gamesSelect.selectedOptions).map(option => ({
-            name: option.value
-        }));
-
-        formData.favoriteGames = selectedGames;
-
-    } catch (error) {
-        console.error('Erro ao buscar jogos:', error);
-        document.getElementById('message').textContent = "Erro ao carregar jogos disponíveis.";
-        document.getElementById('message').style.color = 'red';
-        return;
-    }
-
-    // Exibe a mensagem de carregamento
+    // Exibe mensagem de carregamento
     document.getElementById('message').textContent = "Enviando...";
 
-    // Envia os dados para o backend com uma requisição POST
+    // Envia os dados para o backend
     fetch('http://localhost:8080/player/cadastrar', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Falha na requisição');
-        }
+        if (!response.ok) throw new Error('Falha na requisição');
         return response.json();
     })
     .then(data => {
@@ -79,3 +47,32 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         console.error('Erro no cadastro:', error);
     });
 });
+
+// Carregar jogos disponíveis assim que a página carregar
+async function carregarJogos() {
+    try {
+        const gamesResponse = await fetch('http://localhost:8080/game');
+        if (!gamesResponse.ok) throw new Error('Falha ao obter lista de jogos');
+        
+        const games = await gamesResponse.json();
+        console.log("Jogos disponíveis:", games);
+
+        // Adiciona os jogos ao select
+        const gamesSelect = document.getElementById('favoriteGames');
+        gamesSelect.innerHTML = ''; // Limpa o select
+
+        games.forEach(game => {
+            const option = document.createElement('option');
+            option.value = game.name; // Nome do jogo
+            option.textContent = game.name; // Exibe o nome do jogo
+            gamesSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Erro ao buscar jogos:', error);
+        document.getElementById('message').textContent = "Erro ao carregar jogos disponíveis.";
+        document.getElementById('message').style.color = 'red';
+    }
+}
+
+// Chama a função ao carregar a página
+window.onload = carregarJogos;
