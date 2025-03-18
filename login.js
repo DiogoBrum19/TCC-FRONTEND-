@@ -56,7 +56,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         sessionStorage.setItem('user', JSON.stringify(userData));
 
         // Redirecionar para a página do jogo
-        window.location.href = 'pagina-jogo.html';
+        window.location.href = 'tela-principal.html';
     })
     .catch(error => {
         console.error('Erro no login:', error);
