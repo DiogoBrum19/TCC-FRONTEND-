@@ -50,15 +50,29 @@ input, select {
     font-size: 1em;
 }
 
-/* Estilo para o select */
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #333;
+/* Estilo para o select de jogos */
+#favoriteGames {
+    height: 120px; /* Ajuste para múltipla seleção */
+    background-color: #222; 
+    border: 1px solid #ffcc00;
     cursor: pointer;
+    padding: 5px;
 }
 
+#favoriteGames:focus {
+    outline: none;
+    border: 2px solid #ffdb4d;
+}
+
+/* Dica para múltipla seleção */
+.hint {
+    font-size: 0.9em;
+    color: #ffdb4d;
+    margin-top: -10px;
+    text-align: left;
+}
+
+/* Botão */
 button {
     width: 100%;
     padding: 10px;
@@ -68,12 +82,14 @@ button {
     color: #333;
     font-size: 1.2em;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 button:hover {
     background: #ffdb4d;
 }
 
+/* Links */
 p a {
     color: #ffcc00;
     text-decoration: none;
@@ -96,6 +112,13 @@ p a:hover {
     color: #ffcc00;
 }
 
+/* Mensagem de erro ou sucesso */
+#message {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .container {
@@ -104,5 +127,9 @@ p a:hover {
     
     h2 {
         font-size: 1.8em;
+    }
+
+    #favoriteGames {
+        height: 100px;
     }
 }
