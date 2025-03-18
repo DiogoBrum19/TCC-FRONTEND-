@@ -11,11 +11,23 @@
         <h2>Cadastro</h2>
         <form id="registerForm">
             <input type="text" id="regUsername" placeholder="Usuário" required>
+
             <input type="email" id="email" placeholder="Email" required>
+
             <input type="password" id="regPassword" placeholder="Senha" required>
+
+            <input type="text" id="country" placeholder="País" required>
 
             <!-- Plataforma como campo de texto -->
             <input type="text" id="platform" placeholder="Plataforma (Ex: PC, PS5, PS4, XBOX)" required>
+
+            <!-- Exibir os jogos favoritos -->
+            <div id="favoriteGamesContainer">
+                <label>Jogos Favoritos:</label>
+                <select id="favoriteGames" multiple>
+                    <!-- Lista de jogos será carregada aqui -->
+                </select>
+            </div>
 
             <button type="submit">Cadastrar</button>
         </form>
