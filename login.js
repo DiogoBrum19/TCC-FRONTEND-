@@ -31,13 +31,35 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if (data === "Login bem-sucedido!") {
             console.log('Usuário autenticado:', { username, password });
             alert('Login bem-sucedido!');
-            window.location.href = 'pagina-jogo.html';
+
+            // Buscar os dados do usuário após o login
+            return fetch(`http://localhost:8080/username/${encodeURIComponent(username)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         } else {
-            alert('Credenciais inválidas.');
+            throw new Error('Credenciais inválidas.');
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar dados do usuário.');
+        }
+        return response.json();
+    })
+    .then(userData => {
+        console.log('Dados do usuário:', userData);
+
+        // Salvar os dados no sessionStorage para usar na próxima página
+        sessionStorage.setItem('user', JSON.stringify(userData));
+
+        // Redirecionar para a página do jogo
+        window.location.href = 'pagina-jogo.html';
     })
     .catch(error => {
         console.error('Erro no login:', error);
-        alert('Erro ao tentar autenticar o usuário. Tente novamente mais tarde.');
+        alert(error.message);
     });
 });
