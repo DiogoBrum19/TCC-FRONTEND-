@@ -1,5 +1,3 @@
-// Adiciona um ouvinte de evento para o envio do formulário
-
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();  // Previne o comportamento padrão de recarregar a página ao enviar o formulário
 
@@ -8,19 +6,19 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         username: document.getElementById('regUsername').value,
         email: document.getElementById('email').value,
         password: document.getElementById('regPassword').value,
-        country: document.getElementById('country').value.trim(), // Adicionado campo de país
-        plataformType: document.getElementById('platform').value.trim().toUpperCase() // Transforma em maiúsculas
+        country: document.getElementById('country').value.trim(),
+        plataformType: document.getElementById('platform').value.trim().toUpperCase()
     };
 
-    // Valida a plataforma (deve corresponder ao enum PlataformType do backend)
+    // Valida a plataforma
     const validPlatforms = ['PC', 'PS5', 'PS4', 'XBOX'];
     if (!validPlatforms.includes(formData.plataformType)) {
-        document.getElementById('message').textContent = "Plataforma inválida! Digite uma das opções: PC, PS5, PS4, XBOX.";
+        document.getElementById('message').textContent = "Plataforma inválida!";
         document.getElementById('message').style.color = 'red';
         return;
     }
 
-    // Busca a lista de jogos disponíveis no backend para permitir seleção pelo usuário
+    // Busca os jogos disponíveis
     try {
         const gamesResponse = await fetch('http://localhost:8080/game');
         if (!gamesResponse.ok) {
@@ -29,9 +27,24 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         const games = await gamesResponse.json();
         console.log("Jogos disponíveis:", games);
 
-        // Simula seleção de jogos favoritos pelo usuário (pode ser ajustado com checkboxes no HTML futuramente)
-        const favoriteGames = games.slice(0, 2).map(game => ({ name: game.name })); // Pegando os dois primeiros jogos como exemplo
-        formData.favoriteGames = favoriteGames;
+        // Cria dinamicamente as opções do <select> para os jogos
+        const gamesSelect = document.getElementById('favoriteGames');
+        gamesSelect.innerHTML = '';  // Limpa o select anterior
+
+        games.forEach(game => {
+            const option = document.createElement('option');
+            option.value = game.name; // Nome do jogo
+            option.textContent = game.name; // Exibe o nome do jogo
+            gamesSelect.appendChild(option);
+        });
+
+        // Depois de carregar a lista de jogos, captura os jogos selecionados
+        const selectedGames = Array.from(gamesSelect.selectedOptions).map(option => ({
+            name: option.value
+        }));
+
+        formData.favoriteGames = selectedGames;
+
     } catch (error) {
         console.error('Erro ao buscar jogos:', error);
         document.getElementById('message').textContent = "Erro ao carregar jogos disponíveis.";
@@ -41,9 +54,6 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
     // Exibe a mensagem de carregamento
     document.getElementById('message').textContent = "Enviando...";
-
-    // Exibe no console para depuração
-    console.log('Dados do formulário:', formData);
 
     // Envia os dados para o backend com uma requisição POST
     fetch('http://localhost:8080/player/cadastrar', {
