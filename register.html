@@ -10,33 +10,39 @@
     <div class="container">
         <h2>Cadastro</h2>
         <form id="registerForm">
-            <input type="text" id="regUsername" placeholder="Usuário" required>
+            <label for="regUsername">Usuário:</label>
+            <input type="text" id="regUsername" placeholder="Digite seu usuário" required>
 
-            <input type="email" id="email" placeholder="Email" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Digite seu email" required>
 
-            <input type="password" id="regPassword" placeholder="Senha" required>
+            <label for="regPassword">Senha:</label>
+            <input type="password" id="regPassword" placeholder="Digite sua senha" required>
 
-            <input type="text" id="country" placeholder="País" required>
+            <label for="country">País:</label>
+            <input type="text" id="country" placeholder="Digite seu país" required>
 
-            <!-- Plataforma como campo de texto -->
-            <input type="text" id="platform" placeholder="Plataforma (Ex: PC, PS5, PS4, XBOX)" required>
+            <label for="platform">Plataforma:</label>
+            <input type="text" id="platform" placeholder="Ex: PC, PS5, PS4, XBOX" required>
 
-            <!-- Exibir os jogos favoritos -->
+            <!-- Seleção de Jogos Favoritos -->
             <div id="favoriteGamesContainer">
                 <label for="favoriteGames">Jogos Favoritos:</label>
                 <select id="favoriteGames" name="favoriteGames" multiple>
-                    <!-- Lista de jogos será carregada aqui -->
+                    <!-- Os jogos serão carregados dinamicamente aqui -->
                 </select>
+                <p class="hint">Segure CTRL (Windows) ou CMD (Mac) para selecionar vários jogos.</p>
             </div>
 
             <button type="submit">Cadastrar</button>
         </form>
 
-        <!-- Elemento para exibir mensagens -->
+        <!-- Mensagem de status -->
         <p id="message"></p>
 
         <p>Já tem uma conta? <a href="index.html">Faça login</a></p>
     </div>
+
     <script src="register.js"></script>
 </body>
 </html>
