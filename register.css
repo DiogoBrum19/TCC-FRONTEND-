@@ -39,7 +39,7 @@ h2 {
 }
 
 /* Formulário */
-input {
+input, select {
     width: 100%;
     padding: 10px;
     margin: 15px 0;
@@ -48,6 +48,15 @@ input {
     background: #333;
     color: #fff;
     font-size: 1em;
+}
+
+/* Estilo para o select */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #333;
+    cursor: pointer;
 }
 
 button {
@@ -72,6 +81,19 @@ p a {
 
 p a:hover {
     text-decoration: underline;
+}
+
+/* Estilos para o container dos jogos favoritos */
+#favoriteGamesContainer {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#favoriteGamesContainer label {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    display: block;
+    color: #ffcc00;
 }
 
 /* Responsividade */
