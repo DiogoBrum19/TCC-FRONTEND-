@@ -1,5 +1,4 @@
-/* edit-profile.css - Estilo para a página de Editar Perfil */
-
+/* Reset de estilo básico */
 * {
     margin: 0;
     padding: 0;
@@ -7,8 +6,9 @@
     font-family: 'Arial', sans-serif;
 }
 
+/* Estilos gerais da página */
 body {
-    background: linear-gradient(to right, #1f1f1f, #2e2e2e);
+    background: linear-gradient(to right, #1e3c72, #2a5298); /* Gradiente de fundo */
     color: #fff;
     display: flex;
     justify-content: center;
@@ -17,112 +17,131 @@ body {
     padding: 20px;
 }
 
-/* Container principal */
+/* Container do formulário */
 .container {
-    background: rgba(50, 50, 50, 0.8);
+    background: rgba(255, 255, 255, 0.1); /* Fundo translúcido */
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     padding: 30px;
-    max-width: 700px;
+    max-width: 500px;
     width: 100%;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
 /* Cabeçalho */
 h2 {
-    font-size: 2em;
-    margin-bottom: 30px;
+    font-size: 2.2em;
+    margin-bottom: 20px;
     color: #ffcc00; /* Cor dourada */
     font-weight: bold;
 }
 
-/* Formulário */
-form {
+/* Estilos do formulário */
+input, select {
     width: 100%;
-    margin-top: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-label {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    display: block;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
     background: #333;
     color: #fff;
-    font-size: 1em;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
 }
 
-input:focus, textarea:focus {
+/* Estilo para o select */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #333;
+    cursor: pointer;
+}
+
+input:focus, select:focus {
     outline: none;
-    background: #444;
+    border-color: #ffcc00;
 }
 
-textarea {
-    resize: vertical;
-}
-
-/* Botão de salvar */
+/* Botões de Salvar e Editar */
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #ffcc00;
-    color: #333;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 8px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
     font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-button:hover {
+/* Botão Editar */
+#editButton {
+    background-color: #ffcc00;
+    color: #333;
+}
+
+#editButton:hover {
     background-color: #ffdb4d;
 }
 
-/* Estilos do botão sair */
-button + button {
+/* Botão Salvar */
+#saveButton {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+#saveButton:hover {
+    background-color: #45a049;
+}
+
+/* Botão Cancelar */
+#cancelButton {
+    background-color: #f44336; /* Vermelho */
+    color: white;
     margin-top: 10px;
-    background-color: #e74c3c;
-    color: #fff;
 }
 
-button + button:hover {
-    background-color: #c0392b;
+#cancelButton:hover {
+    background-color: #da190b;
 }
 
-/* Responsividade */
+/* Botão Voltar à Tela Principal */
+#backToMain {
+    background-color: #008CBA; /* Azul */
+    color: white;
+    margin-top: 15px;
+}
+
+#backToMain:hover {
+    background-color: #006f8e;
+}
+
+/* Estilos para o container dos jogos favoritos */
+#favoriteGamesContainer {
+    text-align: left;
+    margin-top: 20px;
+}
+
+#favoriteGamesContainer label {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #ffcc00;
+    display: block;
+}
+
+/* Responsividade para telas menores */
 @media (max-width: 768px) {
     .container {
-        width: 100%;
-        padding: 20px;
+        width: 90%;
     }
 
     h2 {
         font-size: 1.8em;
     }
-}/* Adicionar ao final do seu arquivo edit-profile.css ou styles.css */
 
-select {
-    width: 100%;
-    padding: 10px;
-    background: #333;
-    color: #fff;
-    font-size: 1em;
-    border-radius: 5px;
-    border: none;
+    input, select, button {
+        font-size: 1em;
+    }
 }
-
-select:focus {
-    background: #444;
-    outline: none;
-}
-
