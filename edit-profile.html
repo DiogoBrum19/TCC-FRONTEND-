@@ -1,4 +1,3 @@
-<!-- edit-profile.html (Editar Perfil) -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,50 +9,31 @@
 <body>
     <div class="container">
         <h2>Editar Perfil</h2>
-        
         <form id="editProfileForm">
-            <!-- Nome de usuário -->
-            <div class="form-group">
-                <label for="username">Nome de Usuário:</label>
-                <input type="text" id="username" placeholder="Nome de Usuário" required>
-            </div>
+            <input type="text" id="editUsername" placeholder="Usuário" required disabled>
+            <input type="email" id="email" placeholder="Email" required disabled>
+            <input type="text" id="country" placeholder="País" required disabled>
+            <input type="text" id="platform" placeholder="Plataforma (Ex: PC, PS5, XBOX)" required disabled>
 
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" placeholder="Email" required>
-            </div>
-
-            <!-- Jogos favoritos -->
-            <div class="form-group">
+            <!-- Seção para editar jogos favoritos dentro do formulário -->
+            <div id="favoriteGamesContainer">
                 <label for="favoriteGames">Jogos Favoritos:</label>
-                <input type="text" id="favoriteGames" placeholder="Jogos favoritos (separados por vírgula)" required>
-            </div>
-
-            <!-- Plataforma selecionável -->
-            <div class="form-group">
-                <label for="platform">Plataforma:</label>
-                <select id="platform" required>
-                    <option value="" disabled selected>Escolha a plataforma</option>
-                    <option value="PlayStation">PlayStation</option>
-                    <option value="PC">PC</option>
-                    <option value="Nintendo Switch">Nintendo Switch</option>
-                    <option value="Xbox">Xbox</option>
+                <select id="favoriteGames" name="favoriteGames" multiple required disabled>
+                    <!-- Jogos serão carregados via JavaScript -->
                 </select>
             </div>
 
-            <!-- Bio -->
-            <div class="form-group">
-                <label for="bio">Bio:</label>
-                <textarea id="bio" placeholder="Escreva algo sobre você..." rows="5" required></textarea>
-            </div>
+            <!-- Botão de Editar -->
+            <button type="button" id="editButton">Editar</button>
 
-            <button type="submit">Salvar Alterações</button>
+            <!-- Botões de Salvar e Cancelar, inicialmente escondidos -->
+            <button type="button" id="saveButton" style="display:none;">Salvar</button>
+            <button type="button" id="cancelButton" style="display:none;">Cancelar</button>
+
+            <!-- Botão para voltar à tela principal -->
+            <button type="button" id="backToMain" class="cancel-button">Voltar à Tela Principal</button>
         </form>
-
-        <button onclick="logout()">Sair</button>
     </div>
-
     <script src="edit-profile.js"></script>
 </body>
 </html>
