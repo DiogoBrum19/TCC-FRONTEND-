@@ -1,147 +1,110 @@
-/* Reset de estilo básico */
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
 }
 
-/* Estilos gerais da página */
+/* Corpo da página */
 body {
-    background: linear-gradient(to right, #1e3c72, #2a5298); /* Gradiente de fundo */
+    background: linear-gradient(135deg, #1e1e2f, #252542);
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    height: 100vh;
 }
 
-/* Container do formulário */
+/* Container principal */
 .container {
-    background: rgba(255, 255, 255, 0.1); /* Fundo translúcido */
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    max-width: 500px;
-    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
     text-align: center;
-    transition: all 0.3s ease;
 }
 
-/* Cabeçalho */
+/* Título */
 h2 {
-    font-size: 2.2em;
     margin-bottom: 20px;
-    color: #ffcc00; /* Cor dourada */
-    font-weight: bold;
+    font-size: 24px;
 }
 
-/* Estilos do formulário */
-input, select {
+/* Estilização dos campos de input e textarea */
+input, textarea, select {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background: #333;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.2);
     color: #fff;
-    font-size: 1.1em;
-    transition: all 0.3s ease;
 }
 
-/* Estilo para o select */
+input:disabled, textarea:disabled, select:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Estilização do select */
 select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #333;
-    cursor: pointer;
+    height: 100px;
 }
 
-input:focus, select:focus {
-    outline: none;
-    border-color: #ffcc00;
-}
-
-/* Botões de Salvar e Editar */
+/* Botões */
 button {
     width: 100%;
     padding: 12px;
-    margin-top: 15px;
-    border-radius: 8px;
+    margin: 10px 0;
     border: none;
-    font-size: 1.1em;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 
 /* Botão Editar */
 #editButton {
-    background-color: #ffcc00;
-    color: #333;
+    background: #007bff;
+    color: white;
 }
 
 #editButton:hover {
-    background-color: #ffdb4d;
+    background: #0056b3;
 }
 
 /* Botão Salvar */
 #saveButton {
-    background-color: #4CAF50; /* Verde */
+    background: #28a745;
     color: white;
 }
 
 #saveButton:hover {
-    background-color: #45a049;
+    background: #1e7e34;
 }
 
 /* Botão Cancelar */
 #cancelButton {
-    background-color: #f44336; /* Vermelho */
+    background: #dc3545;
     color: white;
-    margin-top: 10px;
 }
 
 #cancelButton:hover {
-    background-color: #da190b;
+    background: #a71d2a;
 }
 
-/* Botão Voltar à Tela Principal */
+/* Botão Voltar */
 #backToMain {
-    background-color: #008CBA; /* Azul */
+    background: #6c757d;
     color: white;
-    margin-top: 15px;
 }
 
 #backToMain:hover {
-    background-color: #006f8e;
-}
-
-/* Estilos para o container dos jogos favoritos */
-#favoriteGamesContainer {
-    text-align: left;
-    margin-top: 20px;
-}
-
-#favoriteGamesContainer label {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #ffcc00;
-    display: block;
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-    }
-
-    h2 {
-        font-size: 1.8em;
-    }
-
-    input, select, button {
-        font-size: 1em;
-    }
+    background: #495057;
 }
