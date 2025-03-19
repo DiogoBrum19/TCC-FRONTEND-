@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const editButton = document.getElementById('editButton');
     const saveButton = document.getElementById('saveButton');
     const cancelButton = document.getElementById('cancelButton');
+    const backToMainButton = document.getElementById('backToMain');
 
-    // Se não estiver autenticado, redireciona para o login
     if (!user) {
         alert('Usuário não autenticado. Faça login novamente.');
         window.location.href = 'login.html';
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('platform').value = user.platform || '';
     document.getElementById('bio').value = user.bio || '';
 
-    // Carregar os jogos favoritos e marcar os jogos já selecionados
+    // Carregar os jogos favoritos
     fetch('http://localhost:8080/game')
         .then(response => response.json())
         .then(games => {
@@ -35,16 +35,16 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Erro ao carregar jogos:', error));
 
-    // Ação de clicar no botão de editar
+    // Evento para clicar em "Editar"
     editButton.addEventListener('click', function () {
-        // Mostra os botões de salvar e cancelar
+        // Mostrar botões "Salvar" e "Cancelar"
         saveButton.style.display = 'inline-block';
         cancelButton.style.display = 'inline-block';
 
-        // Desabilita o botão de editar
+        // Ocultar botão "Editar"
         editButton.style.display = 'none';
 
-        // Torna os campos editáveis
+        // Habilitar campos para edição
         document.getElementById('editUsername').disabled = false;
         document.getElementById('email').disabled = false;
         document.getElementById('country').disabled = false;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('favoriteGames').disabled = false;
     });
 
-    // Ação de clicar no botão de salvar
+    // Evento para clicar em "Salvar"
     saveButton.addEventListener('click', function () {
         const updatedUser = {
             username: document.getElementById('editUsername').value,
@@ -83,9 +83,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Ação de clicar no botão de cancelar
+    // Evento para clicar em "Cancelar"
     cancelButton.addEventListener('click', function () {
-        // Redireciona para a página do perfil sem salvar as mudanças
-        window.location.href = 'perfil.html';
+        // Recarregar a página para restaurar os valores originais
+        location.reload();
+    });
+
+    // Evento para voltar à tela principal
+    backToMainButton.addEventListener('click', function () {
+        window.location.href = 'tela-principal.html';
     });
 });
