@@ -10,7 +10,7 @@
     <div class="container">
         <h2>Tela Principal</h2>
 
-        <!-- SVG de Perfil que redireciona para a página de edição de perfil -->
+        <!-- Ícone de perfil -->
         <div class="profile-icon-container">
             <a href="edit-profile.html">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -20,21 +20,25 @@
             </a>
         </div>
 
-        <!-- Barra de pesquisa de Jogadores -->
+        <!-- Barra de pesquisa de jogadores -->
         <div class="search-section">
             <input type="text" id="searchPlayerInput" placeholder="Pesquisar jogador..." oninput="searchPlayer()">
-            <div id="searchPlayerResults"></div> <!-- Exibição de resultados de pesquisa de jogadores -->
+            <div id="searchPlayerResults"></div>
         </div>
 
-        <!-- Barra de pesquisa de Jogos -->
+        <!-- Barra de pesquisa de jogos -->
         <div class="search-section">
             <input type="text" id="searchGameInput" placeholder="Pesquisar jogo..." oninput="searchGame()">
-            <div id="searchGameResults"></div> <!-- Exibição de resultados de pesquisa de jogos -->
+            <div id="searchGameResults"></div>
         </div>
 
-        <h3>Jogadores Seguidos</h3>
-        <ul id="followingList"></ul> <!-- Lista de jogadores seguidos -->
+        <!-- Lista de jogadores seguidos -->
+        <div class="followers-section">
+            <h3>Jogadores Seguidos</h3>
+            <div id="followingList" class="followers-list"></div>
+        </div>
 
+        <!-- Botão de logout -->
         <button onclick="logout()">Sair</button>
     </div>
 
