@@ -10,30 +10,26 @@
     <div class="container">
         <h2>Editar Perfil</h2>
         <form id="editProfileForm">
-            <input type="text" id="editUsername" placeholder="Usuário" required disabled>
-            <input type="email" id="email" placeholder="Email" required disabled>
-            <input type="text" id="country" placeholder="País" required disabled>
-            <input type="text" id="platform" placeholder="Plataforma (Ex: PC, PS5, XBOX)" required disabled>
+            <input type="text" id="editUsername" placeholder="Usuário" disabled required>
+            <input type="email" id="email" placeholder="Email" disabled required>
+            <input type="text" id="country" placeholder="País" disabled required>
+            <input type="text" id="platform" placeholder="Plataforma" disabled required>
+            <textarea id="bio" placeholder="Sobre você..." disabled></textarea>
 
-            <!-- Seção para editar jogos favoritos dentro do formulário -->
             <div id="favoriteGamesContainer">
                 <label for="favoriteGames">Jogos Favoritos:</label>
-                <select id="favoriteGames" name="favoriteGames" multiple required disabled>
+                <select id="favoriteGames" name="favoriteGames" multiple disabled required>
                     <!-- Jogos serão carregados via JavaScript -->
                 </select>
             </div>
 
-            <!-- Botão de Editar -->
-            <button type="button" id="editButton">Editar</button>
-
-            <!-- Botões de Salvar e Cancelar, inicialmente escondidos -->
-            <button type="button" id="saveButton" style="display:none;">Salvar</button>
-            <button type="button" id="cancelButton" style="display:none;">Cancelar</button>
-
-            <!-- Botão para voltar à tela principal -->
-            <button type="button" id="backToMain" class="cancel-button">Voltar à Tela Principal</button>
+            <button type="button" id="editButton">Editar Perfil</button>
+            <button type="button" id="saveButton" style="display: none;">Salvar</button>
+            <button type="button" id="cancelButton" style="display: none;">Cancelar</button>
+            <button type="button" id="backToMain">Voltar à Tela Principal</button>
         </form>
     </div>
+
     <script src="edit-profile.js"></script>
 </body>
 </html>
