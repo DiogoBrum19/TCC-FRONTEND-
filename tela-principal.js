@@ -1,145 +1,194 @@
-const API_URL = 'http://localhost:8080'; // URL base da API
-const searchPlayerInput = document.getElementById('searchPlayerInput');
-const searchGameInput = document.getElementById('searchGameInput');
-const searchPlayerResults = document.getElementById('searchPlayerResults');
-const searchGameResults = document.getElementById('searchGameResults');
-const followingList = document.getElementById('followingList');
+document.addEventListener('DOMContentLoaded', async function () {
+    const searchGameInput = document.getElementById('searchGameInput');
+    const searchGameResults = document.getElementById('searchGameResults');
 
-// Função para buscar jogadores
-async function searchPlayer() {
-    const query = searchPlayerInput.value.trim();
-    if (!query) {
-        searchPlayerResults.innerHTML = ''; // Limpar resultados se não houver pesquisa
-        return;
-    }
+    const searchPlayerInput = document.getElementById('searchPlayerInput');
+    const searchPlayerResults = document.getElementById('searchPlayerResults');
 
-    try {
-        const response = await fetch(`${API_URL}/players/search?name=${query}`);
-        const players = await response.json();
+    // Seção para mostrar os jogadores que você está seguindo
+    const followingList = document.getElementById('followingList'); // Nova seção para mostrar jogadores seguidos
 
-        if (players.length > 0) {
-            displaySearchPlayerResults(players);
-        } else {
-            searchPlayerResults.innerHTML = '<p>Usuário não encontrado</p>';
+    let allPlayers = [];
+    let currentUsername = "";
+
+    // Buscar usuário logado
+    async function getLoggedUser() {
+        try {
+            const storedUsername = localStorage.getItem("username");
+            if (!storedUsername) throw new Error("Usuário não autenticado");
+
+            const response = await fetch(`http://localhost:8080/player/username/${storedUsername}`);
+            if (!response.ok) throw new Error("Erro ao obter usuário logado");
+
+            const userData = await response.json();
+            currentUsername = userData.username;
+        } catch (error) {
+            console.error("Erro ao buscar usuário logado:", error);
         }
-    } catch (error) {
-        console.error('Erro ao buscar jogadores:', error);
-        searchPlayerResults.innerHTML = '<p>Erro ao buscar jogadores</p>';
     }
-}
 
-// Exibe os resultados da pesquisa de jogadores
-function displaySearchPlayerResults(players) {
-    searchPlayerResults.innerHTML = '';
-    players.forEach(player => {
-        const playerItem = document.createElement('div');
-        playerItem.classList.add('player-item');
-        playerItem.innerHTML = `
-            <p>${player.username}</p>
-            <button onclick="followPlayer(${player.id})">Seguir</button>
+    await getLoggedUser();
+
+    // Buscar todos os jogadores (usaremos para filtrar localmente)
+    async function fetchAllPlayers() {
+        try {
+            const response = await fetch("http://localhost:8080/player");
+            if (!response.ok) throw new Error("Erro ao buscar jogadores");
+
+            allPlayers = await response.json();
+        } catch (error) {
+            console.error("Erro ao carregar jogadores:", error);
+        }
+    }
+
+    await fetchAllPlayers();
+
+    // Função para exibir os jogadores que você está seguindo
+    function displayFollowing(following) {
+        followingList.innerHTML = ''; // Limpa a lista antes de adicionar
+
+        if (following.length === 0) {
+            followingList.innerHTML = '<p>Você não está seguindo nenhum jogador.</p>';
+            return;
+        }
+
+        following.forEach(player => {
+            const playerCard = document.createElement('div');
+            playerCard.classList.add('player-card');
+            playerCard.innerHTML = `
+            <h4>${player.username}</h4>
+            <button onclick="unfollowPlayer('${player.username}')">Deixar de Seguir</button>
         `;
-        searchPlayerResults.appendChild(playerItem);
-    });
-}
+            followingList.appendChild(playerCard);
+        });
+    }
 
-// Função para seguir jogador
-async function followPlayer(playerId) {
-    try {
-        const response = await fetch(`${API_URL}/players/follow`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ playerId })
+    // Buscar jogadores seguidos
+    async function fetchFollowing() {
+        if (!currentUsername) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/follow/${currentUsername}`); // Supondo que o endpoint /follow/{username} retorne os seguidos
+            if (!response.ok) throw new Error("Erro ao buscar jogadores seguidos");
+
+            const following = await response.json();
+            displayFollowing(following);
+        } catch (error) {
+            console.error("Erro ao buscar jogadores seguidos:", error);
+        }
+    }
+
+    // Chama a função para carregar os jogadores que o usuário está seguindo
+    await fetchFollowing();
+
+    // 🔍 Função para pesquisar jogadores por nome (agora filtra localmente)
+    function searchPlayer() {
+        const playerName = searchPlayerInput.value.trim().toLowerCase();
+
+        if (playerName === '') {
+            searchPlayerResults.innerHTML = '';
+            return;
+        }
+
+        const filteredPlayers = allPlayers.filter(player =>
+            player.username.toLowerCase().includes(playerName)
+        );
+
+        displayPlayers(filteredPlayers);
+    }
+
+    function displayPlayers(players) {
+        searchPlayerResults.innerHTML = "";
+        players.forEach(player => {
+            if (player.username === currentUsername) return; // Evita mostrar o próprio usuário
+
+            const playerCard = document.createElement("div");
+            playerCard.classList.add("player-card");
+
+            playerCard.innerHTML = `
+                <h3>${player.username}</h3>
+                <p>Plataforma: ${player.platform}</p>
+                <p>País: ${player.country}</p>
+                <button class="follow-btn" data-username="${player.username}">Seguir</button>
+            `;
+
+            searchPlayerResults.appendChild(playerCard);
         });
 
-        if (response.ok) {
-            alert('Você começou a seguir o jogador!');
-            loadFollowingList(); // Atualiza a lista de jogadores seguidos
-        } else {
-            alert('Erro ao seguir jogador');
-        }
-    } catch (error) {
-        console.error('Erro ao seguir jogador:', error);
-    }
-}
-
-// Função para carregar jogadores seguidos
-async function loadFollowingList() {
-    try {
-        const response = await fetch(`${API_URL}/players/following`);
-        const followedPlayers = await response.json();
-
-        followingList.innerHTML = '';
-        followedPlayers.forEach(player => {
-            const playerItem = document.createElement('li');
-            playerItem.textContent = player.username;
-            followingList.appendChild(playerItem);
+        document.querySelectorAll(".follow-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                followPlayer(button.dataset.username);
+            });
         });
-    } catch (error) {
-        console.error('Erro ao carregar jogadores seguidos:', error);
-    }
-}
-
-// Carrega a lista de jogadores seguidos assim que a página é carregada
-window.onload = loadFollowingList;
-
-// Função para buscar jogos
-async function searchGame() {
-    const query = searchGameInput.value.trim();
-    if (!query) {
-        searchGameResults.innerHTML = ''; // Limpar resultados se não houver pesquisa
-        return;
     }
 
-    try {
-        const response = await fetch(`${API_URL}/games/search?name=${query}`);
-        const games = await response.json();
+    // 🔍 Função para pesquisar jogadores por jogo favorito (mantém a busca na API)
+    function searchGame() {
+        const gameName = searchGameInput.value.trim();
 
-        if (games.length > 0) {
-            displaySearchGameResults(games);
-        } else {
-            searchGameResults.innerHTML = '<p>Jogo não encontrado</p>';
+        if (gameName === '') {
+            searchGameResults.innerHTML = '';
+            return;
         }
-    } catch (error) {
-        console.error('Erro ao buscar jogos:', error);
-        searchGameResults.innerHTML = '<p>Erro ao buscar jogos</p>';
+
+        fetch(`http://localhost:8080/matchmaking/filtrar?game=${encodeURIComponent(gameName)}`)
+            .then(response => response.json())
+            .then(players => {
+                searchGameResults.innerHTML = '';
+
+                if (players.length === 0) {
+                    searchGameResults.innerHTML = '<p>Nenhum jogador encontrado para este jogo.</p>';
+                    return;
+                }
+
+                players.forEach(player => {
+                    const playerElement = document.createElement('div');
+                    playerElement.classList.add('player-card');
+                    playerElement.innerHTML = `
+                        <h3>${player.username}</h3>
+                        <p>Plataforma: ${player.platform}</p>
+                        <p>País: ${player.country}</p>
+                    `;
+                    searchGameResults.appendChild(playerElement);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao buscar jogadores:', error);
+                searchGameResults.innerHTML = '<p>Erro ao buscar jogadores. Tente novamente.</p>';
+            });
     }
-}
 
-// Exibe os resultados da pesquisa de jogos
-function displaySearchGameResults(games) {
-    searchGameResults.innerHTML = '';
-    games.forEach(game => {
-        const gameItem = document.createElement('div');
-        gameItem.classList.add('game-item');
-        gameItem.innerHTML = `
-            <p>${game.name}</p>
-            <button onclick="viewPlayersForGame(${game.id})">Ver jogadores</button>
-        `;
-        searchGameResults.appendChild(gameItem);
-    });
-}
-
-// Função para ver jogadores que marcaram o jogo como favorito
-async function viewPlayersForGame(gameId) {
-    try {
-        const response = await fetch(`${API_URL}/games/${gameId}/players`);
-        const players = await response.json();
-
-        if (players.length > 0) {
-            alert(`Jogadores que escolheram o jogo: ${players.map(player => player.username).join(', ')}`);
-        } else {
-            alert('Nenhum jogador selecionou esse jogo');
+    // Seguir jogador
+    async function followPlayer(playerToFollowName) {
+        if (!currentUsername) {
+            alert("Erro: Usuário não autenticado.");
+            return;
         }
-    } catch (error) {
-        console.error('Erro ao buscar jogadores para o jogo:', error);
-        alert('Erro ao buscar jogadores para o jogo');
-    }
-}
 
-// Função de logout
-function logout() {
-    // Implementar lógica de logout aqui
-    alert('Saindo...');
-}
+        try {
+            const response = await fetch(`http://localhost:8080/follow/${currentUsername}?playerToFollowName=${playerToFollowName}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) throw new Error("Erro ao seguir jogador");
+
+            alert(`Agora você está seguindo ${playerToFollowName}!`);
+        } catch (error) {
+            console.error("Erro ao seguir jogador:", error);
+        }
+    }
+
+    // Logout
+    function logout() {
+        localStorage.removeItem("username");
+        window.location.href = 'login.html';
+    }
+
+    // Tornar funções acessíveis globalmente
+    window.searchGame = searchGame;
+    window.searchPlayer = searchPlayer;
+    window.logout = logout;
+});
