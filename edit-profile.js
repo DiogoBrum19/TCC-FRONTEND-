@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('email').value = user.email || '';
     document.getElementById('country').value = user.country || '';
     document.getElementById('platform').value = user.platform || '';
+    document.getElementById('bio').value = user.bio || '';
 
     // Carregar os jogos favoritos
     carregarJogos();
@@ -76,9 +77,29 @@ document.addEventListener('DOMContentLoaded', function () {
             email: document.getElementById('email').value,
             country: document.getElementById('country').value,
             platform: document.getElementById('platform').value,
-            favoriteGames: Array.from(document.getElementById('favoriteGames').selectedOptions).map(option => option.value)
+            favoriteGames: Array.from(document.getElementById('favoriteGames').selectedOptions).map(option => {
+                return { name: option.value }; // Mapeando para o formato correto
+            })
         };
 
+        // Verificar se o campo senha foi alterado
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password && password === confirmPassword) {
+            updatedUser.password = password;
+        } else if (password && password !== confirmPassword) {
+            alert('As senhas não coincidem. Tente novamente.');
+            return;
+        }
+
+        // Evitar enviar dados nulos
+        if (!updatedUser.username || !updatedUser.email || !updatedUser.country || !updatedUser.platform) {
+            alert("Preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        // Enviar para o servidor
         fetch(`http://localhost:8080/player/${user.username}`, {
             method: 'PUT',
             headers: {
@@ -100,12 +121,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Evento para clicar em "Cancelar"
     cancelButton.addEventListener('click', function () {
-        // Recarregar a página para restaurar os valores originais
-        location.reload();
+        // Recarregar a página para voltar ao estado original
+        window.location.reload();
     });
 
-    // Evento para voltar à tela principal
+    // Evento para clicar em "Voltar à Tela Principal"
     backToMainButton.addEventListener('click', function () {
-        window.location.href = 'tela-principal.html';
+        window.location.href = 'perfil.html';
     });
 });
