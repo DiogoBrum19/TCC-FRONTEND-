@@ -175,6 +175,30 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    // Função para deixar de seguir um jogador
+    async function unfollowPlayer(playerToUnfollowName) {
+        if (!currentUsername) {
+            alert("Erro: Usuário não autenticado.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/follow/${currentUsername}?playerToUnfollowName=${playerToUnfollowName}`, {
+                method: "DELETE", // Usando DELETE para remover o seguimento
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) throw new Error("Erro ao deixar de seguir jogador");
+
+            alert(`Você deixou de seguir ${playerToUnfollowName}!`);
+            fetchFollowing(); // Atualiza a lista de jogadores seguidos
+        } catch (error) {
+            console.error("Erro ao deixar de seguir jogador:", error);
+        }
+    }
+
     function logout() {
         localStorage.removeItem("username");
         window.location.href = 'login.html';
