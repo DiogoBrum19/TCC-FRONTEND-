@@ -16,24 +16,41 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('email').value = user.email || '';
     document.getElementById('country').value = user.country || '';
     document.getElementById('platform').value = user.platform || '';
-    document.getElementById('bio').value = user.bio || '';
 
     // Carregar os jogos favoritos
-    fetch('http://localhost:8080/game')
-        .then(response => response.json())
-        .then(games => {
+    carregarJogos();
+
+    // Função para carregar os jogos disponíveis no formulário
+    async function carregarJogos() {
+        try {
+            const gamesResponse = await fetch('http://localhost:8080/game');
+            if (!gamesResponse.ok) throw new Error('Falha ao obter lista de jogos');
+            
+            const games = await gamesResponse.json();
+            console.log("Jogos disponíveis:", games);
+
+            // Adiciona os jogos ao select
             const gamesSelect = document.getElementById('favoriteGames');
+            gamesSelect.innerHTML = ''; // Limpa o select
+
             games.forEach(game => {
                 const option = document.createElement('option');
-                option.value = game;
-                option.textContent = game;
-                if (user.favoriteGames.includes(game)) {
+                option.value = game.name; // Nome do jogo
+                option.textContent = game.name; // Exibe o nome do jogo
+
+                // Verifica se o jogo está nos favoritos do usuário
+                if (user.favoriteGames && user.favoriteGames.includes(game.name)) {
                     option.selected = true;
                 }
+
                 gamesSelect.appendChild(option);
             });
-        })
-        .catch(error => console.error('Erro ao carregar jogos:', error));
+        } catch (error) {
+            console.error('Erro ao buscar jogos:', error);
+            document.getElementById('message').textContent = "Erro ao carregar jogos disponíveis.";
+            document.getElementById('message').style.color = 'red';
+        }
+    }
 
     // Evento para clicar em "Editar"
     editButton.addEventListener('click', function () {
@@ -49,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('email').disabled = false;
         document.getElementById('country').disabled = false;
         document.getElementById('platform').disabled = false;
-        document.getElementById('bio').disabled = false;
         document.getElementById('favoriteGames').disabled = false;
     });
 
@@ -60,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
             email: document.getElementById('email').value,
             country: document.getElementById('country').value,
             platform: document.getElementById('platform').value,
-            bio: document.getElementById('bio').value,
             favoriteGames: Array.from(document.getElementById('favoriteGames').selectedOptions).map(option => option.value)
         };
 
