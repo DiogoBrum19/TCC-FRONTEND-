@@ -16,6 +16,12 @@
             <input type="text" id="platform" placeholder="Plataforma" disabled required>
             <textarea id="bio" placeholder="Sobre você..." disabled></textarea>
 
+            <label for="password">Nova Senha:</label>
+            <input type="password" id="password" placeholder="Digite sua nova senha">
+
+            <label for="confirmPassword">Confirmar Senha:</label>
+            <input type="password" id="confirmPassword" placeholder="Confirme sua nova senha">
+
             <div id="favoriteGamesContainer">
                 <label for="favoriteGames">Jogos Favoritos:</label>
                 <select id="favoriteGames" name="favoriteGames" multiple disabled required>
@@ -28,6 +34,7 @@
             <button type="button" id="cancelButton" style="display: none;">Cancelar</button>
             <button type="button" id="backToMain">Voltar à Tela Principal</button>
         </form>
+        <p id="message"></p>
     </div>
 
     <script src="edit-profile.js"></script>
