@@ -96,11 +96,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             const playerCard = document.createElement("div");
             playerCard.classList.add("player-card");
 
+            // Verifica se o jogador já está sendo seguido
+            const isFollowing = allPlayers.some(p => p.username === currentUsername && p.following && p.following.includes(player.username));
+
             playerCard.innerHTML = `
                 <h3>${player.username}</h3>
                 <p>Plataforma: ${player.platform}</p>
                 <p>País: ${player.country}</p>
-                <button class="follow-btn" data-username="${player.username}">Seguir</button>
+                ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
             `;
 
             searchPlayerResults.appendChild(playerCard);
