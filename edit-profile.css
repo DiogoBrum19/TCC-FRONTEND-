@@ -51,6 +51,15 @@ input:disabled, textarea:disabled, select:disabled {
     cursor: not-allowed;
 }
 
+/* Estilização dos labels */
+label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 /* Estilização do select */
 select {
     height: 100px;
@@ -107,4 +116,19 @@ button {
 
 #backToMain:hover {
     background: #495057;
+}
+
+/* Mensagens de feedback */
+#message {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.success {
+    color: #28a745;
+}
+
+.error {
+    color: #dc3545;
 }
