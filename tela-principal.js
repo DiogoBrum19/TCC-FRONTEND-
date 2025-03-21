@@ -9,22 +9,21 @@ document.addEventListener('DOMContentLoaded', async function () {
     let allPlayers = [];
     let currentUsername = "";
 
-    async function getLoggedUser() {
-        try {
-            const storedUsername = localStorage.getItem("username");
-            if (!storedUsername) throw new Error("Usuário não autenticado");
-
-            const response = await fetch(`http://localhost:8080/player/username/${storedUsername}`);
-            if (!response.ok) throw new Error("Erro ao obter usuário logado");
-
-            const userData = await response.json();
-            currentUsername = userData.username;
-        } catch (error) {
-            console.error("Erro ao buscar usuário logado:", error);
+  // Verificação de login com sessionStorage
+    function checkUserLoggedIn() {
+        const userData = sessionStorage.getItem('user');
+        if (!userData) {
+            alert('Você precisa fazer login para acessar esta página!');
+            window.location.href = 'index.html'; // Redireciona para a página de login
+            return false;
         }
+        const parsedUser = JSON.parse(userData);
+        currentUsername = parsedUser.username; // Definindo o username do usuário logado
+        return true;
     }
 
-    await getLoggedUser();
+    // Só executa se o usuário estiver logado
+    if (!checkUserLoggedIn()) return;
 
     async function fetchAllPlayers() {
         try {
