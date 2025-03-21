@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) throw new Error("Erro ao seguir jogador");
 
             alert(`Agora você está seguindo ${playerToFollowName}!`);
+            fetchFollowing(); // Atualiza a lista de seguidos após seguir o jogador
         } catch (error) {
             console.error("Erro ao seguir jogador:", error);
         }
