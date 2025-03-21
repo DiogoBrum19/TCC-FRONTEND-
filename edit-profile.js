@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelButton = document.getElementById('cancelButton');
     const backToMainButton = document.getElementById('backToMain');
     const platformInput = document.getElementById('platform');
-
+    const backButton = document.getElementById('backButton'); // Obtendo o botão de voltar
     if (!user) {
         alert('Usuário não autenticado. Faça login novamente.');
         window.location.href = 'login.html';
@@ -115,4 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
     backToMainButton.addEventListener('click', function () {
         window.location.href = 'perfil.html';
     });
+    // Função de voltar
+    function goBack() {
+        window.location.href = 'tela-principal.html'; // Redireciona para a página principal
+    }  // Atribuir evento de clique ao botão de voltar
+    if (backButton) {
+        backButton.addEventListener('click', goBack);
+    }
 });
