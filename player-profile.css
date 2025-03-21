@@ -1,0 +1,117 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Corpo da página */
+body {
+    background: linear-gradient(135deg, #1e1e2f, #252542);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+/* Container principal */
+#playerProfile {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Título */
+h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* Estilização do nome de usuário e dados */
+#playerUsername {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Estilização do botão de seguir */
+#followButton {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    background: #007bff;
+    color: white;
+}
+
+#followButton:hover {
+    background: #0056b3;
+}
+
+/* Estilização dos botões de Logout e Voltar */
+button {
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+/* Botão de Logout */
+#logoutButton {
+    background: #dc3545;
+    color: white;
+}
+
+#logoutButton:hover {
+    background: #a71d2a;
+}
+
+/* Botão Voltar */
+#backButton {
+    background: #6c757d;
+    color: white;
+}
+
+#backButton:hover {
+    background: #495057;
+}
+
+/* Ajustando a altura para telas menores */
+@media screen and (max-width: 600px) {
+    #playerProfile {
+        width: 100%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    #playerUsername {
+        font-size: 20px;
+    }
+}
