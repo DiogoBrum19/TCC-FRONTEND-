@@ -33,7 +33,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             alert('Login bem-sucedido!');
 
             // Buscar os dados do usuário após o login
-            return fetch(`http://localhost:8080/username/${encodeURIComponent(username)}`, {
+            return fetch(`http://localhost:8080/player/username/${encodeURIComponent(username)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
