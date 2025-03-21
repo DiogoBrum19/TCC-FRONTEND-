@@ -1,5 +1,5 @@
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
-    e.preventDefault();  // Evita o recarregamento da página
+    e.preventDefault(); // Evita o recarregamento da página
 
     // Coleta os valores do formulário
     const formData = {
@@ -7,8 +7,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         email: document.getElementById('email').value,
         password: document.getElementById('regPassword').value,
         country: document.getElementById('country').value.trim(),
-        plataformType: document.getElementById('platform').value.trim().toUpperCase(),
-        favoriteGames: [] // Inicializa um array vazio para os jogos favoritos
+        plataformType: document.getElementById('platform').value.trim().toUpperCase(), // Converte para enum
+        favoriteGames: []
     };
 
     // Validação da plataforma
@@ -19,18 +19,26 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         return;
     }
 
-    // Captura os jogos favoritos selecionados
+    // Captura os jogos favoritos selecionados e formata corretamente como objeto esperado pelo backend
     const gamesSelect = document.getElementById('favoriteGames');
-    const selectedGames = Array.from(gamesSelect.selectedOptions).map(option => option.value);
-    formData.favoriteGames = selectedGames; // Adiciona ao formData
+    const selectedGames = Array.from(gamesSelect.selectedOptions).map(option => ({
+        name: option.value
+    }));
+    formData.favoriteGames = selectedGames;
 
     // Exibe mensagem de carregamento
     document.getElementById('message').textContent = "Enviando...";
 
+    // Exibir os dados no console antes de enviar
+    console.log("Enviando para o backend:", JSON.stringify(formData, null, 2));
+
     // Envia os dados para o backend
     fetch('http://localhost:8080/player/cadastrar', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
         body: JSON.stringify(formData)
     })
     .then(response => {
