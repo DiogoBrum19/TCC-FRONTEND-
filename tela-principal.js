@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     await fetchFollowing();
 
-    function searchPlayer() {
+   function searchPlayer() {
         const playerName = searchPlayerInput.value.trim().toLowerCase();
 
         if (playerName === '') {
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const isFollowing = allPlayers.some(p => p.username === currentUsername && p.following && p.following.includes(player.username));
 
             playerCard.innerHTML = `
-                <h3>${player.username}</h3>
+                <h3 onclick="redirectToPlayerProfile('${player.username}')">${player.username}</h3>
                 <p>Plataforma: ${player.platform}</p>
                 <p>País: ${player.country}</p>
                 ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
@@ -137,14 +137,26 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
 
                 players.forEach(player => {
-                    const playerElement = document.createElement('div');
-                    playerElement.classList.add('player-card');
-                    playerElement.innerHTML = `
-                        <h3>${player.username}</h3>
+                    const playerCard = document.createElement('div');
+                    playerCard.classList.add('player-card');
+
+                    // Verifica se o jogador já está sendo seguido
+                    const isFollowing = allPlayers.some(p => p.username === currentUsername && p.following && p.following.includes(player.username));
+
+                    playerCard.innerHTML = `
+                        <h3 onclick="redirectToPlayerProfile('${player.username}')">${player.username}</h3>
                         <p>Plataforma: ${player.platform}</p>
                         <p>País: ${player.country}</p>
+                        ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
                     `;
-                    searchGameResults.appendChild(playerElement);
+
+                    searchGameResults.appendChild(playerCard);
+                });
+
+                document.querySelectorAll(".follow-btn").forEach(button => {
+                    button.addEventListener("click", function () {
+                        followPlayer(button.dataset.username);
+                    });
                 });
             })
             .catch(error => {
@@ -203,6 +215,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     function logout() {
         localStorage.removeItem("username");
         window.location.href = 'login.html';
+    }
+// Função de redirecionamento para o perfil do jogador
+    function redirectToPlayerProfile(username) {
+        window.location.href = `player-profile.html?username=${encodeURIComponent(username)}`;
     }
 
     window.searchGame = searchGame;
