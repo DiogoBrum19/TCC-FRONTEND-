@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const searchGameInput = document.getElementById('searchGameInput');
     const searchGameResults = document.getElementById('searchGameResults');
-
     const searchPlayerInput = document.getElementById('searchPlayerInput');
     const searchPlayerResults = document.getElementById('searchPlayerResults');
-
     const followingList = document.getElementById('followingList');
     let allPlayers = [];
     let currentUsername = "";
+    let currentUserId = "";  // Variável para armazenar o ID do usuário
 
-  // Verificação de login com sessionStorage
+    // Verificação de login com sessionStorage
     function checkUserLoggedIn() {
         const userData = sessionStorage.getItem('user');
         if (!userData) {
@@ -19,12 +18,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         const parsedUser = JSON.parse(userData);
         currentUsername = parsedUser.username; // Definindo o username do usuário logado
+        currentUserId = parsedUser.id;         // Armazenando o ID do usuário
         return true;
     }
 
     // Só executa se o usuário estiver logado
     if (!checkUserLoggedIn()) return;
 
+    // Função para buscar todos os jogadores
     async function fetchAllPlayers() {
         try {
             if (allPlayers.length > 0) return; // Não faz sentido carregar novamente
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     await fetchAllPlayers();
 
+    // Função para exibir os jogadores seguidos
     function displayFollowing(following) {
         followingList.innerHTML = '';
         if (following.length === 0) {
@@ -50,17 +52,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             const playerCard = document.createElement('div');
             playerCard.classList.add('player-card');
             playerCard.innerHTML = `
-                <h4>${player.username}</h4>
-                <button onclick="unfollowPlayer('${player.username}')">Deixar de Seguir</button>
+                <h4>${player}</h4>  <!-- Exibe o nome do jogador -->
+                <button onclick="unfollowPlayer('${player}')">Deixar de Seguir</button>  <!-- Chama a função de parar de seguir -->
             `;
             followingList.appendChild(playerCard);
         });
     }
 
+    // Função para buscar os jogadores seguidos
     async function fetchFollowing() {
-        if (!currentUsername) return;
+        if (!currentUserId) return; // Verifica se o ID do usuário está disponível
         try {
-            const response = await fetch(`http://localhost:8080/follow/${currentUsername}`);
+            // Usando o ID do usuário para buscar os jogadores seguidos
+            const response = await fetch(`http://localhost:8080/follow/${currentUserId}/following`);
             if (!response.ok) throw new Error("Erro ao buscar jogadores seguidos");
 
             const following = await response.json();
@@ -70,9 +74,38 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    // Chama a função para buscar os jogadores seguidos quando a página carrega
     await fetchFollowing();
 
-   function searchPlayer() {
+    async function unfollowPlayer(playerToUnfollowName) {
+        if (!currentUsername) {
+            alert("Erro: Usuário não autenticado.");
+            return;
+        }
+    
+        try {
+            const response = await fetch(`http://localhost:8080/unfollow/${currentUsername}?playerToUnfollowName=${playerToUnfollowName}`, {
+                method: "DELETE", // Usando DELETE para remover o seguimento
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    
+            if (!response.ok) throw new Error("Erro ao deixar de seguir jogador");
+    
+            alert(`Você deixou de seguir ${playerToUnfollowName}!`);
+            fetchFollowing(); // Atualiza a lista de jogadores seguidos
+        } catch (error) {
+            console.error("Erro ao deixar de seguir jogador:", error);
+        }
+    }
+    
+
+    // Registra a função globalmente para ser chamada no evento onclick
+    window.unfollowPlayer = unfollowPlayer;
+
+    // A função searchPlayer precisa ser definida globalmente para o evento oninput
+    window.searchPlayer = function searchPlayer() {
         const playerName = searchPlayerInput.value.trim().toLowerCase();
 
         if (playerName === '') {
@@ -85,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         );
 
         displayPlayers(filteredPlayers);
-    }
+    };
 
     function displayPlayers(players) {
         searchPlayerResults.innerHTML = "";
@@ -99,11 +132,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             const isFollowing = allPlayers.some(p => p.username === currentUsername && p.following && p.following.includes(player.username));
 
             playerCard.innerHTML = `
-                <h3 onclick="redirectToPlayerProfile('${player.username}')">${player.username}</h3>
-                <p>Plataforma: ${player.platform}</p>
-                <p>País: ${player.country}</p>
-                ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
-            `;
+                    <h3>${player.username}</h3>
+                    <p>Plataforma: ${player.platform}</p>
+                    <p>País: ${player.country}</p>
+                    ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
+                `;
 
             searchPlayerResults.appendChild(playerCard);
         });
@@ -125,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         searchGameResults.innerHTML = '<p>Carregando...</p>';
 
-        fetch(`http://localhost:8080/matchmaking/filtrar?game=${encodeURIComponent(gameName)}`)
+        fetch(`http://localhost:8080/Matchmaking/filtrar?gameName=${encodeURIComponent(gameName)}`)
             .then(response => response.json())
             .then(players => {
                 searchGameResults.innerHTML = '';
@@ -136,26 +169,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
 
                 players.forEach(player => {
-                    const playerCard = document.createElement('div');
-                    playerCard.classList.add('player-card');
-
-                    // Verifica se o jogador já está sendo seguido
-                    const isFollowing = allPlayers.some(p => p.username === currentUsername && p.following && p.following.includes(player.username));
-
-                    playerCard.innerHTML = `
-                        <h3 onclick="redirectToPlayerProfile('${player.username}')">${player.username}</h3>
-                        <p>Plataforma: ${player.platform}</p>
-                        <p>País: ${player.country}</p>
-                        ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
-                    `;
-
-                    searchGameResults.appendChild(playerCard);
-                });
-
-                document.querySelectorAll(".follow-btn").forEach(button => {
-                    button.addEventListener("click", function () {
-                        followPlayer(button.dataset.username);
-                    });
+                    const playerElement = document.createElement('div');
+                    playerElement.classList.add('player-card');
+                    playerElement.innerHTML = `
+                            <h3>${player.username}</h3>
+                            <p>Plataforma: ${player.platform}</p>
+                            <p>País: ${player.country}</p>
+                        `;
+                    searchGameResults.appendChild(playerElement);
                 });
             })
             .catch(error => {
@@ -165,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function followPlayer(playerToFollowName) {
-        if (!currentUsername) {
+        if (!currentUserId) {
             alert("Erro: Usuário não autenticado.");
             return;
         }
@@ -181,46 +202,17 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) throw new Error("Erro ao seguir jogador");
 
             alert(`Agora você está seguindo ${playerToFollowName}!`);
-            fetchFollowing(); // Atualiza a lista de seguidos após seguir o jogador
+            fetchFollowing(); // Atualiza a lista de jogadores seguidos
         } catch (error) {
             console.error("Erro ao seguir jogador:", error);
         }
     }
 
-    // Função para deixar de seguir um jogador
-    async function unfollowPlayer(playerToUnfollowName) {
-        if (!currentUsername) {
-            alert("Erro: Usuário não autenticado.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost:8080/follow/${currentUsername}?playerToUnfollowName=${playerToUnfollowName}`, {
-                method: "DELETE", // Usando DELETE para remover o seguimento
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            if (!response.ok) throw new Error("Erro ao deixar de seguir jogador");
-
-            alert(`Você deixou de seguir ${playerToUnfollowName}!`);
-            fetchFollowing(); // Atualiza a lista de jogadores seguidos
-        } catch (error) {
-            console.error("Erro ao deixar de seguir jogador:", error);
-        }
-    }
-
     function logout() {
-        localStorage.removeItem("username");
-        window.location.href = 'login.html';
-    }
-// Função de redirecionamento para o perfil do jogador
-    function redirectToPlayerProfile(username) {
-        window.location.href = `player-profile.html?username=${encodeURIComponent(username)}`;
+        sessionStorage.removeItem("user"); // Alterei de localStorage para sessionStorage
+        window.location.href = 'index.html'; // Redireciona para o login
     }
 
     window.searchGame = searchGame;
-    window.searchPlayer = searchPlayer;
     window.logout = logout;
 });
