@@ -62,22 +62,29 @@ document.addEventListener('DOMContentLoaded', async function () {
             // Buscando os dados do jogador seguido para exibir
             const followedPlayer = allPlayers.find(p => p.username === player);
     
-            // Exibe as informações de plataforma e jogos favoritos
-            const platformText = followedPlayer ? followedPlayer.platform : 'Desconhecido';
+            // Verificando e exibindo a plataforma corretamente
+            const platformText = followedPlayer && followedPlayer.platform && followedPlayer.platform.trim() !== ''
+                ? followedPlayer.platform.trim() 
+                : 'Plataforma não informada';
+
+            const countryText = followedPlayer && followedPlayer.country && followedPlayer.country.trim() !== ''
+                ? followedPlayer.country.trim()
+                : 'País não informado';
+
             const favoriteGamesText = followedPlayer && followedPlayer.favoriteGames.length > 0 
                 ? followedPlayer.favoriteGames.map(game => game.name).join(', ') 
                 : 'Nenhum jogo favorito';
     
-            playerCard.innerHTML = `
+            playerCard.innerHTML = ` 
                 <h4><a href="player-profile.html?username=${encodeURIComponent(player)}">${player}</a></h4>
                 <p>Plataforma: ${platformText}</p>
+                <p>País: ${countryText}</p>
                 <p>Jogos Favoritos: ${favoriteGamesText}</p>
                 <button onclick="unfollowPlayer('${player}')">Deixar de Seguir</button>
             `;
             followingList.appendChild(playerCard);
         });
     }
-    
 
     async function fetchFollowing() {
         if (!currentUserId) return;
@@ -135,10 +142,21 @@ document.addEventListener('DOMContentLoaded', async function () {
             const playerCard = document.createElement("div");
             playerCard.classList.add("player-card");
             const isFollowing = allPlayers.some(p => p.username === currentUsername && p.following && p.following.includes(player.username));
+            
+            // Verificando a plataforma corretamente
+            const platformText = player.platform && player.platform.trim() !== '' ? player.platform : 'Plataforma não informada';
+            const countryText = player.country && player.country.trim() !== '' ? player.country : 'País não informado';
+            
+            // Exibindo os jogos favoritos
+            const favoriteGamesText = player.favoriteGames && player.favoriteGames.length > 0
+                ? player.favoriteGames.map(game => game.name).join(', ')
+                : 'Nenhum jogo favorito';
+            
             playerCard.innerHTML = `
                 <h3><a href="player-profile.html?username=${encodeURIComponent(player.username)}">${player.username}</a></h3>
-                <p>Plataforma: ${player.platform}</p>
-                <p>País: ${player.country}</p>
+                <p>Plataforma: ${platformText}</p>
+                <p>País: ${countryText}</p>
+                <p>Jogos Favoritos: ${favoriteGamesText}</p>
                 ${isFollowing ? '' : `<button class="follow-btn" data-username="${player.username}">Seguir</button>`} 
             `;
             searchPlayerResults.appendChild(playerCard);
@@ -168,10 +186,19 @@ document.addEventListener('DOMContentLoaded', async function () {
                 players.forEach(player => {
                     const playerElement = document.createElement('div');
                     playerElement.classList.add('player-card');
+                    const platformText = player.platform && player.platform.trim() !== '' ? player.platform : 'Plataforma não informada';
+                    const countryText = player.country && player.country.trim() !== '' ? player.country : 'País não informado';
+
+                    // Exibindo jogos favoritos
+                    const favoriteGamesText = player.favoriteGames && player.favoriteGames.length > 0
+                        ? player.favoriteGames.map(game => game.name).join(', ')
+                        : 'Nenhum jogo favorito';
+
                     playerElement.innerHTML = `
                         <h3><a href="player-profile.html?username=${encodeURIComponent(player.username)}">${player.username}</a></h3>
-                        <p>Plataforma: ${player.platform}</p>
-                        <p>País: ${player.country}</p>
+                        <p>Plataforma: ${platformText}</p>
+                        <p>País: ${countryText}</p>
+                        <p>Jogos Favoritos: ${favoriteGamesText}</p>
                         <button class="follow-btn" data-username="${player.username}">Seguir</button>
                     `;
                     searchGameResults.appendChild(playerElement);
